@@ -1,0 +1,209 @@
+/* Tu estilo original */
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: url('img/fondo-tex.jpg') no-repeat center center fixed;
+  background-size: cover;
+  margin: 0;
+  padding: 20px;
+  color: #3e2f1c;
+}
+
+section {
+  max-width: 900px;
+  margin: auto;
+  background: rgba(255, 248, 240, 0.95);
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  margin-bottom: 20px;
+}
+
+input, select {
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  width: 100%;
+  font-size: 16px;
+}
+
+button {
+  background-color: #d4a373;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  margin: 10px 5px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+button:hover {
+  transform: scale(1.05);
+}
+
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  margin-bottom: 20px;
+}
+
+.tabs button {
+  background: #b8865b;
+  font-weight: bold;
+}
+
+#productos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 16px;
+}
+
+.producto {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 12px;
+  padding: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  text-align: center;
+  transition: transform 0.2s;
+}
+
+.producto:hover {
+  transform: scale(1.03);
+}
+
+.producto img {
+  width: 100%;
+  max-height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+.oculto {
+  display: none;
+}
+
+#pantallaPago button:last-of-type {
+  margin-top: 30px;
+}
+
+#pantallaPago {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 20px;
+}
+
+#pantallaPago button {
+  padding: 10px 16px;
+  font-size: 16px;
+  border-radius: 6px;
+  border: none;
+  background-color: #e0e0e0;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#pantallaPago button:hover {
+  background-color: #d5d5d5;
+}
+
+#btnImprimir {
+  margin-top: 12px;
+  background-color: #ffd700;
+  font-weight: bold;
+}
+
+#resumen button:first-of-type {
+  background-color: #8fbc8f;
+  font-weight: bold;
+}
+
+#resumen button:first-of-type:hover {
+  background-color: #7aa87a;
+}
+
+/* 🔥 NUEVO: layout táctil y comanda lateral */
+main {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.comanda {
+  flex: 1;
+  min-width: 280px;
+  background: rgba(255, 255, 240, 0.95);
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.comanda h2 {
+  margin-top: 0;
+  font-size: 1.4rem;
+  color: #6d4c41;
+}
+
+.comanda ul {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0;
+}
+
+.comanda li {
+  margin-bottom: 6px;
+  font-size: 15px;
+}
+
+.comanda p {
+  font-style: italic;
+  margin-top: 10px;
+  color: #8d6e63;
+}
+
+.comanda button {
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+  background-color: #a1887f;
+  color: white;
+  font-weight: bold;
+}
+
+/* 🔘 Botones de categoría */
+nav {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+nav button {
+  background-color: #ffe0b2;
+  color: #4e342e;
+  border: 2px solid #a1887f;
+  border-radius: 10px;
+  padding: 10px 16px;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+nav button:hover {
+  background-color: #ffcc80;
+}
+
+/* 🧡 Footer artesanal */
+footer {
+  text-align: center;
+  padding: 16px;
+  background: rgba(215, 168, 110, 0.9);
+  color: white;
+  font-weight: bold;
+  border-radius: 12px;
+  margin-top: 30px;
+}

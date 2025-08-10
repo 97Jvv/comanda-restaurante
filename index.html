@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Comanda Restaurante</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- Registro -->
+  <section id="pantallaRegistro">
+    <h2>👤 Registro de Mesero</h2>
+    <input type="text" id="mesero" placeholder="Nombre del mesero" />
+    <input type="text" id="mesa" placeholder="Número de mesa 🪑" />
+    <button onclick="iniciarComanda()">Continuar</button>
+  </section>
+
+  <!-- Menú -->
+  <section id="pantallaMenu" class="oculto">
+    <h2>🍽️ Menú</h2>
+    <div class="tabs">
+      <button onclick="mostrarCategoria('entradas')">🥗 Entradas</button>
+      <button onclick="mostrarCategoria('platos')">🍽️ Platos Fuertes</button>
+      <button onclick="mostrarCategoria('bebidas')">🥤 Bebidas</button>
+      <button onclick="mostrarCategoria('postres')">🍮 Postres</button>
+    </div>
+    <div id="productos"></div>
+
+    <div id="resumen">
+      <h3>🧾 Resumen del Pedido</h3>
+      <ul id="listaComanda"></ul>
+      <label>Comensales: <input type="number" id="comensales" min="1" value="1" /></label>
+      <button onclick="enviarACocina()">📤 Enviar a cocina</button>
+      <button onclick="mostrarPantallaPago()">💳 Ir a pago</button>
+    </div>
+  </section>
+
+  <!-- Cocina en proceso -->
+  <section id="pantallaCocina" class="oculto">
+    <h2>🧑‍🍳 En proceso de cocina</h2>
+    <p>Tu pedido está siendo preparado. Por favor espera unos minutos...</p>
+    <button onclick="mostrarPantallaPago()">💳 Ir a pago</button>
+  </section>
+
+  <!-- Pago -->
+  <section id="pantallaPago" class="oculto">
+    <h2>💳 Forma de Pago</h2>
+    <p>Total: $<span id="totalPago">0</span></p>
+    <p>Por persona: $<span id="divisionPago">0</span></p>
+    <label><input type="radio" name="pago" value="Tarjeta" /> Tarjeta</label>
+    <label><input type="radio" name="pago" value="Efectivo" /> Efectivo</label>
+    <button onclick="imprimirTicket()">🖨️ Imprimir Ticket</button>
+
+    <!-- Ticket visual -->
+    <div id="ticketVisual" style="margin-top: 20px;"></div>
+  </section>
+
+  <script src="app.js"></script>
+</body>
+</html>
