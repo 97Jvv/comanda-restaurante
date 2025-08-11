@@ -37,25 +37,44 @@
   </section>
 
   <!-- Cocina en proceso -->
-  <section id="pantallaCocina" class="oculto">
-    <h2>🧑‍🍳 En proceso de cocina</h2>
-    <p>Tu pedido está siendo preparado. Por favor espera unos minutos...</p>
-    <button onclick="mostrarPantallaPago()">💳 Ir a pago</button>
-  </section>
+<section id="pantallaCocina" class="oculto">
+  <h2>🧑‍🍳 En proceso de cocina</h2>
+  <p>Tu pedido está siendo preparado. Por favor espera unos minutos...</p>
 
-  <!-- Pago -->
-  <section id="pantallaPago" class="oculto">
-    <h2>💳 Forma de Pago</h2>
-    <p>Total: $<span id="totalPago">0</span></p>
-    <p>Por persona: $<span id="divisionPago">0</span></p>
-    <label><input type="radio" name="pago" value="Tarjeta" /> Tarjeta</label>
-    <label><input type="radio" name="pago" value="Efectivo" /> Efectivo</label>
-    <button onclick="imprimirTicket()">🖨️ Imprimir Ticket</button>
+  <!-- Lista de productos en cocina -->
+  <ul id="listaCocina" style="margin-top: 20px;"></ul>
 
-    <!-- Ticket visual -->
-    <div id="ticketVisual" style="margin-top: 20px;"></div>
-  </section>
+  <!-- Confirmación de entrega -->
+  <div id="estadoEntrega" style="margin-top: 10px;"></div>
 
-  <script src="app.js"></script>
-</body>
-</html>
+  <!-- Botón para marcar como entregado -->
+  <button onclick="marcarComoEntregado()" 
+    style="margin-top: 20px; padding: 10px 20px; background: #27ae60; color: white; border: none; border-radius: 8px; font-size: 16px;">
+    ✅ Pedido entregado
+  </button>
+
+  <!-- Botón para ir a pago -->
+  <button onclick="mostrarPantallaPago()" 
+    style="margin-top: 20px; padding: 10px 20px; background: #2980b9; color: white; border: none; border-radius: 8px; font-size: 16px;">
+    💳 Ir a pago
+  </button>
+</section>
+
+ <!-- Pantalla de pago -->
+<section id="pantallaPago" class="oculto">
+  <h2>💳 Pago</h2>
+  <p>Total a pagar: $<span id="totalPago">0</span></p>
+  <p>Pago por persona: $<span id="divisionPago">0.00</span></p>
+
+  <ul id="listaPago" style="padding-left: 20px;"></ul>
+
+  <div id="metodosPago" style="margin-top: 20px;"></div>
+
+  <button onclick="reiniciarComanda()" style="margin-top: 20px;">🧺 Nueva mesa</button>
+</section>
+  <!-- Ticket visual -->
+  <div id="ticketVisual" style="margin-top: 20px;"></div>
+
+ 
+
+ <script src="app.js"></script>

@@ -45,9 +45,7 @@ function mostrarCategoria(categoria) {
   const contenedor = document.getElementById("productos");
   contenedor.innerHTML = "";
 
-  if (!productos[categoria]) return;
-
-  productos[categoria].forEach((producto, index) => {
+  productos[categoria]?.forEach((producto, index) => {
     const div = document.createElement("div");
     div.className = "producto";
     div.innerHTML = `
@@ -62,21 +60,39 @@ function mostrarCategoria(categoria) {
 
 function agregarProducto(categoria, index) {
   const producto = productos[categoria][index];
-  comanda.push(producto);
+  comanda.push({
+    id: Date.now(),
+    nombre: producto.nombre,
+    precio: producto.precio,
+    detalle: ""
+  });
   estadoComanda = "pendiente";
   actualizarResumen();
+  calcularPago();
 }
 
 function actualizarResumen() {
   const lista = document.getElementById("listaComanda");
   if (!lista) return;
 
-  lista.innerHTML = "";
-  comanda.forEach(item => {
-    const li = document.createElement("li");
-    li.textContent = `${item.nombre} - $${item.precio}`;
-    lista.appendChild(li);
-  });
+  lista.innerHTML = comanda.map(item => `
+    <li>
+      ${item.nombre} - $${item.precio}
+      <input type="text" placeholder="Detalles" value="${item.detalle}" onchange="actualizarDetalle(${item.id}, this.value)" />
+      <button onclick="eliminarProducto(${item.id})">🗑️</button>
+    </li>
+  `).join('');
+}
+
+function actualizarDetalle(id, texto) {
+  const producto = comanda.find(item => item.id === id);
+  if (producto) producto.detalle = texto;
+}
+
+function eliminarProducto(id) {
+  comanda = comanda.filter(item => item.id !== id);
+  actualizarResumen();
+  calcularPago();
 }
 
 function enviarACocina() {
@@ -88,32 +104,47 @@ function enviarACocina() {
   estadoComanda = "en_proceso";
   comensales = parseInt(document.getElementById("comensales").value) || 1;
 
-  const pantallaMenu = document.getElementById("pantallaMenu");
-  const pantallaCocina = document.getElementById("pantallaCocina");
+  document.getElementById("pantallaMenu").classList.add("oculto");
+  document.getElementById("pantallaCocina").classList.remove("oculto");
 
-  if (pantallaMenu && pantallaCocina) {
-    pantallaMenu.classList.add("oculto");
-    pantallaCocina.classList.remove("oculto");
+  const listaCocina = document.getElementById("listaCocina");
+  if (listaCocina) {
+    listaCocina.innerHTML = comanda.map(item => `
+      <li>
+        <strong>${item.nombre}</strong> - $${item.precio}
+        ${item.detalle ? `<div style="color:#d35400; font-style:italic;">📝 ${item.detalle}</div>` : ""}
+      </li>
+    `).join('');
   }
 }
 
 function mostrarPantallaPago() {
-  const pantallaMenu = document.getElementById("pantallaMenu");
-  const pantallaCocina = document.getElementById("pantallaCocina");
-  const pantallaPago = document.getElementById("pantallaPago");
-
-  if (pantallaMenu) pantallaMenu.classList.add("oculto");
-  if (pantallaCocina) pantallaCocina.classList.add("oculto");
-  if (pantallaPago) pantallaPago.classList.remove("oculto");
+  document.getElementById("pantallaMenu")?.classList.add("oculto");
+  document.getElementById("pantallaCocina")?.classList.add("oculto");
+  document.getElementById("pantallaPago")?.classList.remove("oculto");
 
   const total = comanda.reduce((sum, item) => sum + item.precio, 0);
-  document.getElementById("totalPago").textContent = total;
-  document.getElementById("divisionPago").textContent = (total / comensales).toFixed(2);
+  const porPersona = comensales > 0 ? (total / comensales) : total;
+
+  document.getElementById("totalPago").textContent = `$${total}`;
+  document.getElementById("divisionPago").textContent = `$${porPersona.toFixed(2)}`;
+
+  document.getElementById("listaPago").innerHTML = comanda.map(item =>
+    `<li>${item.nombre} - $${item.precio}${item.detalle ? ` <em>(${item.detalle})</em>` : ""}</li>`
+  ).join('');
+
+  document.getElementById("metodosPago").innerHTML = `
+    <button onclick="enviarTicket('Efectivo')">💵 Efectivo</button>
+    <button onclick="enviarTicket('Tarjeta')">💳 Tarjeta</button>
+    <button onclick="enviarTicket('Transferencia')">📲 Transferencia</button>
+  `;
 }
 
-function imprimirTicket() {
+function enviarTicket(metodo) {
   const total = comanda.reduce((sum, item) => sum + item.precio, 0);
-  const resumen = comanda.map(item => `<li>${item.nombre} - $${item.precio}</li>`).join('');
+  const resumen = comanda.map(item =>
+    `<li>${item.nombre} - $${item.precio}${item.detalle ? ` <em>(${item.detalle})</em>` : ""}</li>`
+  ).join('');
   const fecha = new Date().toLocaleString();
 
   const ticketHTML = `
@@ -122,14 +153,45 @@ function imprimirTicket() {
       <p><strong>Mesero:</strong> ${nombreMesero}</p>
       <p><strong>Mesa:</strong> ${numeroMesa}</p>
       <p><strong>Fecha:</strong> ${fecha}</p>
+      <p><strong>Método de pago:</strong> ${metodo}</p>
       <ul style="padding-left: 20px;">${resumen}</ul>
       <p><strong>Total:</strong> $${total}</p>
       <p style="margin-top:10px;">Gracias por tu visita 🙌</p>
     </div>
   `;
 
-  const ticketContainer = document.getElementById("ticketVisual");
-  if (ticketContainer) {
-    ticketContainer.innerHTML = ticketHTML;
-  }
+  document.getElementById("ticketVisual").innerHTML = ticketHTML;
+  console.log(`🎟️ Ticket generado con método de pago: ${metodo}`);
 }
+
+function marcarComoEntregado() {
+  estadoComanda = "entregado";
+  document.getElementById("estadoEntrega").innerHTML = `
+    <p style="color:#27ae60; font-weight:bold;">🟢 Pedido entregado en mesa</p>
+  `;
+}
+
+function calcularPago() {
+  const total = comanda.reduce((sum, item) => sum + item.precio, 0);
+  const porPersona = comensales > 0 ? (total / comensales) : total;
+
+  document.getElementById("totalPago").textContent = `$${total}`;
+  document.getElementById("divisionPago").textContent = `$${porPersona.toFixed(2)}`;
+}
+
+function reiniciarComanda() {
+  document.getElementById("pantallaRegistro")?.classList.remove("oculto");
+  document.getElementById("pantallaPago")?.classList.add("oculto");
+  document.getElementById("pantallaCocina")?.classList.add("oculto");
+  document.getElementById("pantallaMenu")?.classList.add("oculto");
+
+  comanda = [];
+  estadoComanda = "pendiente";
+  comensales = 1;
+
+  document.getElementById("ticketVisual").innerHTML = "";
+  document.getElementById("listaComanda").innerHTML = "";
+  document.getElementById("estadoEntrega").innerHTML = "";
+  document.getElementById("listaCocina").innerHTML = "";
+  const totalPago = document.getElementById("totalPago");
+if (totalPago) totalPago.textContent = "$0";}
